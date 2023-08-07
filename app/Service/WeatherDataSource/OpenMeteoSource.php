@@ -3,14 +3,28 @@
 namespace App\Service\WeatherDataSource;
 
 use App\Models\Location;
-use App\Models\Parameter;
-use App\Models\WeatherData;
+use App\Repositories\ParameterRepository;
+use App\Repositories\WeatherDataRepository;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class OpenMeteoSource
+class OpenMeteoSource implements WeatherSourceInterface
 {
     public const SOURCE_NAME = 'open-meteo';
+
+    private WeatherDataRepository $weatherDataRepository;
+    private ParameterRepository $parameterRepository;
+
+    /**
+     * @param WeatherDataRepository $weatherDataRepository
+     */
+    public function __construct(WeatherDataRepository $weatherDataRepository, ParameterRepository $parameterRepository)
+    {
+        $this->weatherDataRepository = $weatherDataRepository;
+        $this->parameterRepository = $parameterRepository;
+    }
 
     /**
      * @param string $startDate
@@ -19,38 +33,24 @@ class OpenMeteoSource
      */
     public function getData(string $startDate, string $finishDate, Location $location)
     {
-        $response = $this->get($startDate, $finishDate, $location->latitude, $location->longitude);
-        $times = $response['daily']['time'];
-        foreach ($response['daily'] as $key => $value) {
-            if ($key == 'time') {
-                continue;
-            }
-            $param = Parameter::firstOrCreate(
-                [
-                    'name'      => $key,
-                    'valuetype' => 'float'
-                ]
-            );
-            $count = count($value);
+        try {
+            $response = $this->get($startDate, $finishDate, $location->latitude, $location->longitude)->json();
 
-            WeatherData::whereDate('date', '>=', $startDate)
-                ->whereDate('date', '<=', $finishDate)->where(
-                    [
-                        'source'      => self::SOURCE_NAME,
-                        'location_id' => $location->id
-                    ]
-                )->delete();
-            $data = [];
-            for ($i = 0; $i < $count; $i++) {
-                $data[] = [
-                    'location_id'  => $location->id,
-                    'parameter_id' => $param->id,
-                    'value'        => $value[$i],
-                    'date'         => $times[$i],
-                    'source'       => self::SOURCE_NAME
-                ];
+            $times = $response['daily']['time'];
+            foreach ($response['daily'] as $key => $value) {
+                if ($key == 'time') {
+                    continue;
+                }
+                $param = $this->parameterRepository->findOrCreate($key);
+                $count = count($value);
+
+                $this->weatherDataRepository->purgeOldData($startDate, $finishDate, $location, self::SOURCE_NAME);
+                $this->weatherDataRepository->insertData($count, $location, $param, $value, $times, self::SOURCE_NAME);
             }
-            WeatherData::insert($data);
+        } catch (\Throwable $e) {
+            Log::error('Http client Exception ', ['error' => $e]);
+
+            throw new BadRequestException('Service cannot receive rates. Try again later or contact administrator');
         }
     }
 
@@ -83,6 +83,6 @@ class OpenMeteoSource
 
     public function getBaseUrl(): string
     {
-        return config('weather-datasources.open-meteo.historical_url');;
+        return config('weather-datasources.open-meteo.historical_url');
     }
 }
