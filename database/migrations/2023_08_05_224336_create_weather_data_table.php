@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('parameter_id');
-            $table->float('value');
+            $table->float('value')->nullable();
             $table->date('date');
             $table->string('source');
             $table->foreign('location_id')->references('id')->on('locations');
