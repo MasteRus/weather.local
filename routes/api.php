@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('locations', LocationController::class);
+
+Route::post('locations/{id}/average-weather', [LocationController::class, 'averageWeather']);

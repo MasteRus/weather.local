@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Location;
 use App\Models\WeatherData;
+use Illuminate\Support\Facades\DB;
 
 class WeatherDataRepository
 {
@@ -13,15 +14,16 @@ class WeatherDataRepository
      * @param Location $location
      * @param string $source
      */
-    public function purgeOldData(string $startDate, string $finishDate, Location $location, string $source): void
+    public function purgeOldData(string $startDate, string $finishDate, Location $location, string $source, $key = null): void
     {
-        WeatherData::whereDate('date', '>=', $startDate)
-            ->whereDate('date', '<=', $finishDate)->where(
-                [
-                    'source'      => $source,
-                    'location_id' => $location->id
-                ]
-            )->delete();
+        $query = '
+DELETE wd FROM weather_data wd
+LEFT JOIN parameters p ON p.id = wd.parameter_id
+WHERE wd.`date` BETWEEN ? AND ?
+AND (wd.`location_id` = ? and wd.`source` = ?)
+AND p.name = ?';
+
+        DB::delete($query, [$startDate, $finishDate, $location->id, $source, $key]);
     }
 
     /**
@@ -51,5 +53,24 @@ class WeatherDataRepository
             ];
         }
         WeatherData::insert($data);
+    }
+
+    public function getAverageData(Location $location, array $params)
+    {
+        $startDate = $params['start_date'];
+        $finishDate = $params['finish_date'];
+
+        $query = '
+SELECT p.name as parameter, AVG(wd.value) as avgvalue
+FROM weather_data wd
+LEFT JOIN parameters p on wd.parameter_id = p.id
+WHERE wd.`date` BETWEEN ? AND ?
+GROUP BY wd.parameter_id
+';
+
+        $result = DB::select($query, [$startDate, $finishDate]);
+
+
+        return $result;
     }
 }

@@ -2,14 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LocationAverageRequest;
 use App\Http\Requests\LocationStoreRequest;
 use App\Http\Resources\LocationCollection;
 use App\Http\Resources\LocationResource;
 use App\Models\Location;
+use App\Repositories\WeatherDataRepository;
+use App\Service\WeatherService;
 use Illuminate\Http\JsonResponse;
 
 class LocationController extends Controller
 {
+    private WeatherDataRepository $weatherDataRepository;
+
+    /**
+     * @param WeatherService $service
+     */
+    public function __construct(WeatherService $service, WeatherDataRepository $weatherDataRepository)
+    {
+        $this->weatherDataRepository = $weatherDataRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -58,5 +71,18 @@ class LocationController extends Controller
         $location->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function averageWeather(LocationAverageRequest $request, int $id)
+    {
+        $location = Location::findOrFail($id);
+        $post = $request->validated();
+        $collection = [
+            'start_date'  => $post['start_date'],
+            'finish_date' => $post['finish_date'],
+            'values'      => $this->weatherDataRepository->getAverageData($location, $post)
+        ];
+
+        return $collection;
     }
 }

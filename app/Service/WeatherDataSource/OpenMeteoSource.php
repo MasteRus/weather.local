@@ -44,7 +44,7 @@ class OpenMeteoSource implements WeatherSourceInterface
                 $param = $this->parameterRepository->findOrCreate($key);
                 $count = count($value);
 
-                $this->weatherDataRepository->purgeOldData($startDate, $finishDate, $location, self::SOURCE_NAME);
+                $this->weatherDataRepository->purgeOldData($startDate, $finishDate, $location, self::SOURCE_NAME, $key);
                 $this->weatherDataRepository->insertData($count, $location, $param, $value, $times, self::SOURCE_NAME);
             }
         } catch (\Throwable $e) {
