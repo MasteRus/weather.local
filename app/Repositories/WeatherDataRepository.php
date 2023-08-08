@@ -13,9 +13,15 @@ class WeatherDataRepository
      * @param string $finishDate
      * @param Location $location
      * @param string $source
+     * @param null $key
      */
-    public function purgeOldData(string $startDate, string $finishDate, Location $location, string $source, $key = null): void
-    {
+    public function purgeOldData(
+        string $startDate,
+        string $finishDate,
+        Location $location,
+        string $source,
+        $key = null
+    ): void {
         $query = '
 DELETE wd FROM weather_data wd
 LEFT JOIN parameters p ON p.id = wd.parameter_id
@@ -55,7 +61,12 @@ AND p.name = ?';
         WeatherData::insert($data);
     }
 
-    public function getAverageData(Location $location, array $params)
+    /**
+     * @param Location $location
+     * @param array $params
+     * @return array
+     */
+    public function getAverageData(Location $location, array $params): array
     {
         $startDate = $params['start_date'];
         $finishDate = $params['finish_date'];
@@ -67,10 +78,7 @@ LEFT JOIN parameters p on wd.parameter_id = p.id
 WHERE wd.`date` BETWEEN ? AND ?
 GROUP BY wd.parameter_id
 ';
-
         $result = DB::select($query, [$startDate, $finishDate]);
-
-
         return $result;
     }
 }
