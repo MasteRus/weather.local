@@ -6,7 +6,7 @@ use App\Models\Location;
 use App\Models\WeatherData;
 use Illuminate\Support\Facades\DB;
 
-class WeatherDataRepository
+class WeatherDataRepository implements IWeatherDataRepository
 {
     /**
      * @param string $startDate

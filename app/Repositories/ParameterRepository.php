@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Parameter;
 
-class ParameterRepository
+class ParameterRepository implements IParameterRepository
 {
     /**
      * @param string $key
