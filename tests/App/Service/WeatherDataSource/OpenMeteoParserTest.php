@@ -120,7 +120,7 @@ class OpenMeteoParserTest extends TestCase
         $parameterRepositoryMock = $this->partialMock(
             IParameterRepository::class,
             function (MockInterface $mock) use ($times) {
-                $mock->shouldReceive('findOrCreate')->times($times);
+                $mock->shouldReceive('findOrCreate')->times(2*$times);
             }
         );
 

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('parameters', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('source');
             $table->string('type')->nullable();
             $table->string('valuetype')->nullable();
             $table->string('units')->nullable();

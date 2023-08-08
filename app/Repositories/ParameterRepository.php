@@ -7,18 +7,22 @@ use App\Models\Parameter;
 class ParameterRepository implements IParameterRepository
 {
     /**
+     * @param string $source
      * @param string $key
-     * @return mixed
+     * @param string|null $value
+     * @return Parameter|null
      */
-    public function findOrCreate(string $key)
+    public function findOrCreate(string $source, string $key, string $value = null): ?Parameter
     {
-        $param = Parameter::firstOrCreate(
-            [
-                'name' => $key,
-                'valuetype' => 'float'
-            ]
-        );
+        $attributes = [
+            'name'      => $key,
+            'source'    => $source,
+            'valuetype' => 'float',
+        ];
+        if ($value) {
+            $attributes['units'] = $value;
+        }
 
-        return $param;
+        return Parameter::firstOrCreate($attributes);
     }
 }
