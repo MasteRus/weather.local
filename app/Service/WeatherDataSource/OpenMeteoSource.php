@@ -21,8 +21,11 @@ class OpenMeteoSource implements WeatherSourceInterface
     public function getData(string $startDate, string $finishDate, Location $location)
     {
         try {
-        $response = $this->get($startDate, $finishDate, $location)->json();
-        OpenMeteoHistoricalParserJob::dispatch($response, $startDate, $finishDate, $location);
+            $response = $this->get($startDate, $finishDate, $location)->json() ?? null;
+            $error = $response['error'] ?? false;
+            if ($response && !$error) {
+                OpenMeteoHistoricalParserJob::dispatch($response, $startDate, $finishDate, $location);
+            }
         } catch (\Throwable $e) {
             Log::error('Http client Exception ', ['error' => $e]);
 

@@ -22,7 +22,7 @@ class OpenMeteoHistoricalParserJob implements ShouldQueue
     private string $finishDate;
     private Location $location;
 
-    public function __construct(array $response, string $startDate, string $finishDate, Location $location)
+    public function __construct(?array $response, string $startDate, string $finishDate, Location $location)
     {
         $this->response = $response;
         $this->startDate = $startDate;
