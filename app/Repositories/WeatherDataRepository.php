@@ -34,7 +34,7 @@ AND (wd.`location_id` = ? and wd.`source` = ?)
             $params[] = $key;
         }
 
-        DB::delete($query, [$startDate, $finishDate, $location->id, $source, $key]);
+        DB::delete($query, $params);
     }
 
     /**

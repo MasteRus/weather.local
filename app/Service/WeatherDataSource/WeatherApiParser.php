@@ -33,6 +33,9 @@ class WeatherApiParser
     {
         $layers = config('weather-datasources.weatherapi.layers');
         $dailyData = $response['forecast']['forecastday'] ?? [];
+        if (!$dailyData) {
+            return ;
+        }
 
         $paramsArr = [];
         if (count($dailyData)) {

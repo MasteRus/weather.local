@@ -146,7 +146,7 @@ class OpenMeteoSourceTest extends TestCase
         $location = $this->partialMock(Location::class);
 
         $source = new OpenMeteoSource($weatherDataRepositoryMock, $parameterRepositoryMock);
-        $source->getData('2023-01-01', '2023-01-37', $location);
+        $source->getData('2023-01-01', '2023-01-30', $location);
 
         if ($success) {
             Queue::assertPushed(OpenMeteoHistoricalParserJob::class);

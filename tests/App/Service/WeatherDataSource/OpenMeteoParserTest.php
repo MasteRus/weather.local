@@ -113,14 +113,14 @@ class OpenMeteoParserTest extends TestCase
             IWeatherDataRepository::class,
             function (MockInterface $mock) use ($times) {
                 $mock->shouldReceive('purgeOldData')->times($times);
-                $mock->shouldReceive('insertData')->times($times);
+                $mock->shouldReceive('insertDataOpenMeteo')->times($times);
             }
         );
 
         $parameterRepositoryMock = $this->partialMock(
             IParameterRepository::class,
             function (MockInterface $mock) use ($times) {
-                $mock->shouldReceive('findOrCreate')->times(2*$times);
+                $mock->shouldReceive('findOrCreate')->times($times);
             }
         );
 
