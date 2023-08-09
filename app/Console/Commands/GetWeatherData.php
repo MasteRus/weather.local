@@ -27,8 +27,8 @@ class GetWeatherData extends Command
      */
     public function handle()
     {
-        $startDate = $this->argument('startDate') ?? date('Y-m-d');
-        $finishDate = $this->argument('finishDate') ?? date('Y-m-d');
+        $startDate = $this->argument('startDate') ?? date('Y-m-d', strtotime('-1 day'));
+        $finishDate = $this->argument('finishDate') ?? date('Y-m-d', strtotime('-1 day'));
 
         foreach (Location::all() as $loc) {
             GetNewWeatherDataEvent::dispatch($loc, $startDate, $finishDate);
