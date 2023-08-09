@@ -27,7 +27,12 @@ DELETE wd FROM weather_data wd
 LEFT JOIN parameters p ON p.id = wd.parameter_id
 WHERE wd.`date` BETWEEN ? AND ?
 AND (wd.`location_id` = ? and wd.`source` = ?)
-AND p.name = ?';
+';
+        $params = [$startDate, $finishDate, $location->id, $source];
+        if ($key) {
+            $query .= 'AND p.name = ?';
+            $params[] = $key;
+        }
 
         DB::delete($query, [$startDate, $finishDate, $location->id, $source, $key]);
     }
@@ -40,7 +45,7 @@ AND p.name = ?';
      * @param array $times
      * @param string $source
      */
-    public function insertData(
+    public function insertDataOpenMeteo(
         int $count,
         Location $location,
         mixed $param,
@@ -59,6 +64,11 @@ AND p.name = ?';
             ];
         }
         WeatherData::insert($data);
+    }
+
+    public function insertDataWeatherApi(array $values): void
+    {
+        WeatherData::insert($values);
     }
 
     /**

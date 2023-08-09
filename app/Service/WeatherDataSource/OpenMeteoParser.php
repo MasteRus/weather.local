@@ -34,18 +34,18 @@ class OpenMeteoParser
         $times = $response['daily']['time'] ?? [];
         $dailyData = $response['daily'] ?? [];
         $dailyUnits = $response['daily_units'] ?? [];
+        $params = [];
         foreach ($dailyUnits as $key => $value) {
             if ($key == 'time') {
                 continue;
             }
-            $this->parameterRepository->findOrCreate(OpenMeteoSource::SOURCE_NAME, $key, $value);
+            $params[$key] = $this->parameterRepository->findOrCreate(OpenMeteoSource::SOURCE_NAME, $key, $value);
         }
 
         foreach ($dailyData as $key => $value) {
             if ($key == 'time') {
                 continue;
             }
-            $param = $this->parameterRepository->findOrCreate(OpenMeteoSource::SOURCE_NAME, $key);
             $count = count($value);
 
             $this->weatherDataRepository->purgeOldData(
@@ -55,10 +55,10 @@ class OpenMeteoParser
                 OpenMeteoSource::SOURCE_NAME,
                 $key
             );
-            $this->weatherDataRepository->insertData(
+            $this->weatherDataRepository->insertDataOpenMeteo(
                 $count,
                 $location,
-                $param,
+                $params[$key],
                 $value,
                 $times,
                 OpenMeteoSource::SOURCE_NAME

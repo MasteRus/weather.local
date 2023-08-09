@@ -13,6 +13,7 @@ class Parameter extends Model
 
     protected $fillable = [
         'name',
+        'source',
         'type',
         'valuetype',
         'units',
