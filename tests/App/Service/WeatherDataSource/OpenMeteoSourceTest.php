@@ -4,8 +4,6 @@ namespace App\Service\WeatherDataSource;
 
 use App\Jobs\OpenMeteoHistoricalParserJob;
 use App\Models\Location;
-use App\Repositories\IParameterRepository;
-use App\Repositories\IWeatherDataRepository;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
@@ -115,15 +113,7 @@ class OpenMeteoSourceTest extends TestCase
 
     public function test_getBaseUrl(): void
     {
-        $weatherDataRepositoryMock = $this->mock(
-            IWeatherDataRepository::class,
-        );
-
-        $parameterRepositoryMock = $this->mock(
-            IParameterRepository::class,
-        );
-
-        $source = new OpenMeteoSource($weatherDataRepositoryMock, $parameterRepositoryMock);
+        $source = new OpenMeteoSource();
         Config::set('weather-datasources.open-meteo.historical_url', 'https://archive-api.open-meteo.com/v1/archive');
         $url = $source->getBaseUrl();
         $this->assertEquals('https://archive-api.open-meteo.com/v1/archive', $url);
@@ -136,16 +126,9 @@ class OpenMeteoSourceTest extends TestCase
         Queue::fake();
         Http::fake(Http::response($response));
 
-        $weatherDataRepositoryMock = $this->mock(
-            IWeatherDataRepository::class,
-        );
-
-        $parameterRepositoryMock = $this->mock(
-            IParameterRepository::class,
-        );
         $location = $this->partialMock(Location::class);
 
-        $source = new OpenMeteoSource($weatherDataRepositoryMock, $parameterRepositoryMock);
+        $source = new OpenMeteoSource();
         $source->getData('2023-01-01', '2023-01-30', $location);
 
         if ($success) {

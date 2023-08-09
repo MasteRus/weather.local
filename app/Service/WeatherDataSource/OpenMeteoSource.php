@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class OpenMeteoSource implements WeatherSourceInterface
+class OpenMeteoSource extends AbstractWeatherDataSource implements WeatherSourceInterface
 {
     public const SOURCE_NAME = 'open-meteo';
 

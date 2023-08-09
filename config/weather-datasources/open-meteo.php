@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'enabled' => true,
     'historical_url' => env('DATA_SOURCE_OPEN_METEO_HISTORICAL', 'https://archive-api.open-meteo.com/v1/archive'),
     'forecast_url'   => env('DATA_SOURCE_OPEN_METEO_FORECAST', 'https://api.open-meteo.com/v1/forecast'),
     'timezone'       => 'GMT',

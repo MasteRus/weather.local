@@ -37,9 +37,9 @@ class WeatherApiHistoricalParserJob implements ShouldQueue
         IParameterRepository $parameterRepository,
         IWeatherDataRepository $weatherDataRepository
     ): void {
-        Log::info("==========START OpenMeteoParser Job ================");
+        Log::info("==========START WeatherApiParser Job ================");
         $service = new WeatherApiParser($parameterRepository, $weatherDataRepository);
         $service->parse($this->response, $this->startDate, $this->finishDate, $this->location);
-        Log::info("==========START Finish Job ================");
+        Log::info("==========FINISH WeatherApiParser Job ================");
     }
 }

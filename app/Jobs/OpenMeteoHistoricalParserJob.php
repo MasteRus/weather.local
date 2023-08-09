@@ -30,7 +30,6 @@ class OpenMeteoHistoricalParserJob implements ShouldQueue
         $this->location = $location;
     }
 
-
     /**
      * Execute the job.
      */
@@ -41,6 +40,6 @@ class OpenMeteoHistoricalParserJob implements ShouldQueue
         Log::info("==========START OpenMeteoParser Job ================");
         $service = new OpenMeteoParser($parameterRepository, $weatherDataRepository);
         $service->parse($this->response, $this->startDate, $this->finishDate, $this->location);
-        Log::info("==========START Finish Job ================");
+        Log::info("==========Finish OpenMeteoParser Job ================");
     }
 }

@@ -31,7 +31,7 @@ class WeatherApiParser
      */
     public function parse(?array $response, string $startDate, string $finishDate, Location $location): void
     {
-        $layers = config('weather-datasources.weatherapi.layers');
+        $layers = config('weather-datasources.weather-api.layers');
         $dailyData = $response['forecast']['forecastday'] ?? [];
         if (!$dailyData) {
             return ;
