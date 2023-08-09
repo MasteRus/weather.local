@@ -8,17 +8,13 @@ use App\Http\Resources\LocationCollection;
 use App\Http\Resources\LocationResource;
 use App\Models\Location;
 use App\Repositories\WeatherDataRepository;
-use App\Service\WeatherService;
 use Illuminate\Http\JsonResponse;
 
 class LocationController extends Controller
 {
     private WeatherDataRepository $weatherDataRepository;
 
-    /**
-     * @param WeatherService $service
-     */
-    public function __construct(WeatherService $service, WeatherDataRepository $weatherDataRepository)
+    public function __construct(WeatherDataRepository $weatherDataRepository)
     {
         $this->weatherDataRepository = $weatherDataRepository;
     }
@@ -28,7 +24,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return new LocationCollection(Location::paginate(3));
+        return new LocationCollection(Location::paginate(5));
     }
 
     /**
