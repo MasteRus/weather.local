@@ -39,8 +39,8 @@ class WeatherApiParser
 
         $paramsArr = [];
         if (count($dailyData)) {
-            foreach ($layers as $layer) {
-                $paramsArr[$layer] = $this->parameterRepository->findOrCreate(WeatherApiSource::SOURCE_NAME, $layer);
+            foreach ($layers as $layer => $layerType) {
+                $paramsArr[$layer] = $this->parameterRepository->findOrCreate(WeatherApiSource::SOURCE_NAME, $layer, null,$layerType);
             }
         }
 
@@ -53,7 +53,7 @@ class WeatherApiParser
 
         $values = [];
         foreach ($dailyData as $value) {
-            foreach ($layers as $layer) {
+            foreach ($layers as $layer => $layerType) {
                 $values[] = [
                     'location_id'  => $location->id,
                     'parameter_id' => $paramsArr[$layer]->id,

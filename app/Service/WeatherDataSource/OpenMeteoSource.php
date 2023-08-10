@@ -51,7 +51,7 @@ class OpenMeteoSource extends AbstractWeatherDataSource implements WeatherSource
                     'timezone'   => 'GMT',
                     'latitude'   => $location->latitude,
                     'longitude'  => $location->longitude,
-                    'daily'      => implode(',', config('weather-datasources.open-meteo.layers')),
+                    'daily'      => implode(',', array_keys(config('weather-datasources.open-meteo.layers'))),
                 ]
             );
 

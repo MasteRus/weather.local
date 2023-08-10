@@ -12,8 +12,12 @@ class ParameterRepository implements IParameterRepository
      * @param string|null $value
      * @return Parameter|null
      */
-    public function findOrCreate(string $source, string $key, string $value = null): ?Parameter
-    {
+    public function findOrCreate(
+        string $source,
+        string $key,
+        string $value = null,
+        string $type = null
+    ): ?Parameter {
         $attributes = [
             'name'      => $key,
             'source'    => $source,
@@ -21,6 +25,9 @@ class ParameterRepository implements IParameterRepository
         ];
         if ($value) {
             $attributes['units'] = $value;
+        }
+        if ($type) {
+            $attributes['type'] = $type;
         }
 
         return Parameter::firstOrCreate($attributes);

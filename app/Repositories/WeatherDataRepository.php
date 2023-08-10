@@ -82,11 +82,11 @@ AND (wd.`location_id` = ? and wd.`source` = ?)
         $finishDate = $params['finish_date'];
 
         $query = '
-SELECT p.name as parameter, AVG(wd.value) as avgvalue
+SELECT p.type as parameter, AVG(wd.value) as avgvalue
 FROM weather_data wd
 LEFT JOIN parameters p on wd.parameter_id = p.id
 WHERE wd.`date` BETWEEN ? AND ?
-GROUP BY wd.parameter_id
+GROUP BY wd.parameter_id, p.type
 ';
         $result = DB::select($query, [$startDate, $finishDate]);
         return $result;
