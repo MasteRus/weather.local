@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "c0833de5-f105-4f80-ba6b-862164dff625",
+		"name": "Weather.local export",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4517275"
+	},
+	"item": [
+		{
+			"name": "LOcations",
+			"item": [
+				{
+					"name": "Index",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{address}}/api/locations",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Index",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{adminToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{address}}/api/locations",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 (Ubuntu)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Aug 2023 06:50:04 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Limassol2\",\n            \"latitude\": 33.0713,\n            \"longitude\": 33.022617,\n            \"latitude_display\": \"33.07130000\",\n            \"longitude_display\": \"33.02261700\",\n            \"created_at\": \"2023-08-05 14:22:24\",\n            \"updated_at\": \"2023-08-05 17:08:37\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Limassol\",\n            \"latitude\": 34.70713,\n            \"longitude\": 33.022617,\n            \"latitude_display\": \"34.70713000\",\n            \"longitude_display\": \"33.02261700\",\n            \"created_at\": \"2023-08-05 14:22:51\",\n            \"updated_at\": \"2023-08-05 14:22:51\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Limassol\",\n            \"latitude\": 34.70713,\n            \"longitude\": 33.022617,\n            \"latitude_display\": \"34.70713000\",\n            \"longitude_display\": \"33.02261700\",\n            \"created_at\": \"2023-08-05 14:24:16\",\n            \"updated_at\": \"2023-08-05 14:24:16\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Limassol\",\n            \"latitude\": 34.70713,\n            \"longitude\": 33.022617,\n            \"latitude_display\": \"34.70713000\",\n            \"longitude_display\": \"33.02261700\",\n            \"created_at\": \"2023-08-05 14:54:51\",\n            \"updated_at\": \"2023-08-05 14:54:51\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Limassol\",\n            \"latitude\": 34.70713,\n            \"longitude\": 33.022617,\n            \"latitude_display\": \"34.70713000\",\n            \"longitude_display\": \"33.02261700\",\n            \"created_at\": \"2023-08-05 17:10:57\",\n            \"updated_at\": \"2023-08-05 17:10:57\"\n        }\n    ],\n    \"links\": {\n        \"self\": \"link-value\",\n        \"first\": \"http://weather.local/api/locations?page=1\",\n        \"last\": \"http://weather.local/api/locations?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http://weather.local/api/locations?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://weather.local/api/locations\",\n        \"per_page\": 5,\n        \"to\": 5,\n        \"total\": 5\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "View",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{address}}/api/locations/1",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Limassol\",\n\t\"latitude\": 34.707130,\n    \"longitude\": 33.022617\n}"
+						},
+						"url": {
+							"raw": "http://{{address}}/api/locations",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Limassol2\",\n\t\"latitude\": 34.707130,\n    \"longitude\": 33.022617\n}"
+						},
+						"url": {
+							"raw": "http://{{address}}/api/locations/2",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{address}}/api/locations/1",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get average data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"start_date\": \"2023-01-01 00:00:00\",\n    \"finish_date\": \"2023-01-09 23:59:29\"\n}"
+						},
+						"url": {
+							"raw": "http://{{address}}/api/locations/2/average-weather",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"2",
+								"average-weather"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get average data",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{adminToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"start_date\": \"2023-01-01 00:00:00\",\n    \"finish_date\": \"2023-01-09 23:59:29\"\n}"
+								},
+								"url": {
+									"raw": "http://{{address}}/api/locations/2/average-weather",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"locations",
+										"2",
+										"average-weather"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.18.0 (Ubuntu)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Aug 2023 06:51:41 GMT"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "58"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"start_date\": \"2023-01-01 00:00:00\",\n    \"finish_date\": \"2023-01-09 23:59:29\",\n    \"values\": [\n        {\n            \"parameter\": \"temperature_2m_max\",\n            \"avgvalue\": 17.92222222222222\n        },\n        {\n            \"parameter\": \"temperature_2m_min\",\n            \"avgvalue\": 12.853333333333337\n        },\n        {\n            \"parameter\": \"temperature_2m_mean\",\n            \"avgvalue\": 15.140000000000004\n        },\n        {\n            \"parameter\": \"precipitation_sum\",\n            \"avgvalue\": 0.16444444444444437\n        },\n        {\n            \"parameter\": \"windspeed_10m_max\",\n            \"avgvalue\": 22.05333333333333\n        },\n        {\n            \"parameter\": \"windgusts_10m_max\",\n            \"avgvalue\": 34.826666666666675\n        },\n        {\n            \"parameter\": \"avgtemp_c\",\n            \"avgvalue\": 14.597777777777775\n        },\n        {\n            \"parameter\": \"mintemp_c\",\n            \"avgvalue\": 11.739999999999998\n        },\n        {\n            \"parameter\": \"maxtemp_c\",\n            \"avgvalue\": 18.73999999999999\n        },\n        {\n            \"parameter\": \"avghumidity\",\n            \"avgvalue\": 56.644444444444446\n        },\n        {\n            \"parameter\": \"totalprecip_mm\",\n            \"avgvalue\": 0.02222222222222222\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Location",
+			"value": "Limassol"
+		}
+	]
+}
