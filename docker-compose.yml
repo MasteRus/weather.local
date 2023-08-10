@@ -1,0 +1,62 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: weather-local
+    container_name: weather-local-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - weather-local
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: weather-local-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - weather-local
+  queue:
+    image: weather-local
+    container_name: weather-local-queue
+    command: ["su", "webuser", "-c", "php artisan queue:work --tries=3"]
+    networks:
+      - weather-local
+    depends_on:
+      - app
+    volumes:
+      - ./:/var/www
+  db:
+      image: mysql:8
+      command: --default-authentication-plugin=mysql_native_password
+      container_name: weather-local-db
+      restart: unless-stopped
+      environment:
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+          MYSQL_PASSWORD: ${DB_PASSWORD}
+          MYSQL_USER: ${DB_USERNAME}
+          SERVICE_TAGS: dev
+          SERVICE_NAME: mysql
+      volumes:
+          - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+          - /data/mysql-weather:/var/lib/mysql
+      networks:
+          - weather-local
+      ports:
+          - "3306:3306"
+
+networks:
+  weather-local:
+    driver: bridge
+
