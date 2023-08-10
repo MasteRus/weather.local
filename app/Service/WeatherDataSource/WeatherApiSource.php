@@ -2,6 +2,7 @@
 
 namespace App\Service\WeatherDataSource;
 
+use App\Jobs\WeatherApiHistoricalGetDataJob;
 use App\Jobs\WeatherApiHistoricalParserJob;
 use App\Models\Location;
 use Illuminate\Http\Client\Response;
@@ -30,8 +31,7 @@ class WeatherApiSource extends AbstractWeatherDataSource implements WeatherSourc
         } catch (\Throwable $e) {
             Log::error('Http client Exception ', ['error' => $e]);
 
-            throw new BadRequestException('Service cannot receive rates. Try again later or contact administrator');
-        }
+            throw new BadRequestException('Service ' . self::SOURCE_NAME . ' bad response');        }
     }
 
     /**
@@ -62,5 +62,10 @@ class WeatherApiSource extends AbstractWeatherDataSource implements WeatherSourc
         return config(
                 'weather-datasources.weather-api.history_url'
             );
+    }
+
+    public function dispatchGetResponseJob(string $startDate, string $finishDate, Location $location)
+    {
+        WeatherApiHistoricalGetDataJob::dispatch($startDate, $finishDate, $location);
     }
 }

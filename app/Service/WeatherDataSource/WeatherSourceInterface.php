@@ -9,4 +9,6 @@ interface WeatherSourceInterface
     public function getData(string $startDate, string $finishDate, Location $location);
 
     public function getBaseUrl(): string;
+
+    public function dispatchGetResponseJob(string $startDate, string $finishDate, Location $location);
 }

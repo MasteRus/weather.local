@@ -47,7 +47,15 @@ class DataSourceReceiveDataJob implements ShouldQueue
             Log::error('DataSource ' . $this->source . ' Is not instance of source');
             throw new DataSourceMisconfigurationException();
         }
-        $dataSource->getData($this->startDate, $this->finishDate, $this->location);
+        $dataSource->dispatchGetResponseJob($this->startDate, $this->finishDate, $this->location);
         Log::info("==========FINISH DataSourceReceiveData Job ================");
+    }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(\Throwable $exception): void
+    {
+        Log::error("DataSourceRecieve error", $exception);
     }
 }

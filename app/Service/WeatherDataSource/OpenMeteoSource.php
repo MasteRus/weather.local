@@ -2,6 +2,7 @@
 
 namespace App\Service\WeatherDataSource;
 
+use App\Jobs\OpenMeteoHistoricalGetDataJob;
 use App\Jobs\OpenMeteoHistoricalParserJob;
 use App\Models\Location;
 use Illuminate\Http\Client\Response;
@@ -29,7 +30,7 @@ class OpenMeteoSource extends AbstractWeatherDataSource implements WeatherSource
         } catch (\Throwable $e) {
             Log::error('Http client Exception ', ['error' => $e]);
 
-            throw new BadRequestException('Service cannot receive rates. Try again later or contact administrator');
+            throw new BadRequestException('Service ' . self::SOURCE_NAME . ' bad response');
         }
     }
 
@@ -55,11 +56,18 @@ class OpenMeteoSource extends AbstractWeatherDataSource implements WeatherSource
                 ]
             );
 
-        return Http::get($url);
+        $response = Http::get($url);
+
+        return $response;
     }
 
     public function getBaseUrl(): string
     {
         return config('weather-datasources.open-meteo.historical_url');
+    }
+
+    public function dispatchGetResponseJob(string $startDate, string $finishDate, Location $location)
+    {
+        OpenMeteoHistoricalGetDataJob::dispatch($startDate, $finishDate, $location);
     }
 }
