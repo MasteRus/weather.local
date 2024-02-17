@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Exceptions\DataSourceMisconfigurationException;
 use App\Models\Location;
-use App\Service\WeatherDataSource\AbstractWeatherDataSource;
+use App\Service\WeatherDataSource\BaseWeatherDataSource;
 use App\Service\WeatherDataSource\WeatherSourceInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -43,7 +43,7 @@ class DataSourceReceiveDataJob implements ShouldQueue
         }
         /** @var WeatherSourceInterface $dataSource */
         $dataSource = new $this->source();
-        if (!($dataSource instanceof WeatherSourceInterface) || !($dataSource instanceof AbstractWeatherDataSource)) {
+        if (!($dataSource instanceof WeatherSourceInterface)) {
             Log::error('DataSource ' . $this->source . ' Is not instance of source');
             throw new DataSourceMisconfigurationException();
         }
@@ -56,6 +56,6 @@ class DataSourceReceiveDataJob implements ShouldQueue
      */
     public function failed(\Throwable $exception): void
     {
-        Log::error("DataSourceRecieve error", $exception);
+        Log::error("DataSourceRecieve error", ['error' => $exception]);
     }
 }

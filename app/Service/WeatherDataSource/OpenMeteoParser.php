@@ -31,13 +31,13 @@ class OpenMeteoParser
      */
     public function parse(?array $response, string $startDate, string $finishDate, Location $location): void
     {
-        $layers = config('weather-datasources.open-meteo.layers');
+        $layers = config('weather-datasources.open-meteo-source.layers');
         $times = $response['daily']['time'] ?? [];
         $dailyData = $response['daily'] ?? [];
         $dailyUnits = $response['daily_units'] ?? [];
         $params = [];
         foreach ($dailyUnits as $key => $value) {
-            if ($key == 'time') {
+            if ($key === 'time') {
                 continue;
             }
             $type = $layers[$key] ?? null;
@@ -45,7 +45,7 @@ class OpenMeteoParser
         }
 
         foreach ($dailyData as $key => $value) {
-            if ($key == 'time') {
+            if ($key === 'time') {
                 continue;
             }
             $count = count($value);
