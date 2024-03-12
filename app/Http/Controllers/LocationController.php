@@ -6,79 +6,262 @@ use App\Http\Requests\LocationAverageRequest;
 use App\Http\Requests\LocationStoreRequest;
 use App\Http\Resources\LocationCollection;
 use App\Http\Resources\LocationResource;
+use App\Http\Responses\LocationAverageWeatherResponse;
 use App\Models\Location;
-use App\Repositories\WeatherDataRepository;
+use App\Repositories\ILocationRepository;
+use App\Repositories\IWeatherDataRepository;
 use Illuminate\Http\JsonResponse;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Tag(
+ *     name="Location",
+ *     description="API Endpoints of Locations"
+ * )
+ */
 class LocationController extends Controller
 {
-    private WeatherDataRepository $weatherDataRepository;
+    private IWeatherDataRepository $weatherDataRepository;
+    private ILocationRepository $locationRepository;
 
-    public function __construct(WeatherDataRepository $weatherDataRepository)
-    {
+    public function __construct(
+        IWeatherDataRepository $weatherDataRepository,
+        ILocationRepository $locationRepository
+    ) {
         $this->weatherDataRepository = $weatherDataRepository;
+        $this->locationRepository = $locationRepository;
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/locations",
+     *     summary="List",
+     *     tags={"Location"},
+     *     @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          @OA\JsonContent(ref="#/components/schemas/LocationCollection")
+     *      )
+     * )
      */
-    public function index()
+    public function index(): LocationCollection
     {
-        return new LocationCollection(Location::paginate(5));
+        return new LocationCollection($this->locationRepository->paginate(20));
     }
 
     /**
-     * Store a newly created resource in storage.
-     * @throws \Throwable
+     * @OA\Post(
+     *     path="/locations",
+     *     summary="Create location",
+     *     tags={"Location"},
+     *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="latitude",
+     *                      type="number",
+     *                  ),
+     *                  @OA\Property(
+     *                       property="longitude",
+     *                       type="number",
+     *                   ),
+     *                  example={"name": "Washington", "latitude": 47.751076, "longitude": -120.740135}
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *           response=200,
+     *           description="OK",
+     *           @OA\Schema(
+     *               schema="LocationResponse",
+     *               type="object",
+     *               @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   @OA\Items(ref="#/components/schemas/Location")
+     *               )
+     *           )
+     *       )
+     * )
      */
-    public function store(LocationStoreRequest $request)
+    public function store(LocationStoreRequest $request): LocationResource
     {
-        $post = $request->validated();
-        $location = new Location($post);
-        $location->saveOrFail();
+        $location = $this->locationRepository->create($request->validated());
 
         return new LocationResource($location);
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/locations/{id}",
+     *     summary="Show",
+     *     tags={"Location"},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="The id location",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          @OA\Schema(
+     *              schema="LocationResponse",
+     *              type="object",
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/Location")
+     *              )
+     *          )
+     *      )
+     * )
      */
-    public function show(Location $location): LocationResource
+    public function show(int $id): LocationResource
     {
+        return new LocationResource($this->locationRepository->getById($id));
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/locations/{id}",
+     *     summary="Update location",
+     *     tags={"Location"},
+     *     @OA\Parameter(
+     *           name="id",
+     *           in="path",
+     *           required=true,
+     *           description="The id location",
+     *           @OA\Schema(
+     *               type="number"
+     *           )
+     *     ),
+     *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="latitude",
+     *                      type="number",
+     *                  ),
+     *                  @OA\Property(
+     *                       property="longitude",
+     *                       type="number",
+     *                   ),
+     *                  example={"name": "Washington", "latitude": 47.751076, "longitude": -120.740135}
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *           response=200,
+     *           description="OK",
+     *           @OA\Schema(
+     *               schema="LocationResponse",
+     *               type="object",
+     *               @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   @OA\Items(ref="#/components/schemas/Location")
+     *               )
+     *           )
+     *       )
+     * )
+     */
+    public function update(LocationStoreRequest $request, int $id): LocationResource
+    {
+        $location = $this->locationRepository->update($id, $request->validated());
+
         return new LocationResource($location);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Delete(
+     *     path="/locations/{id}",
+     *     summary="Delete",
+     *     tags={"Location"},
+     *     @OA\Parameter(
+     *           name="id",
+     *           in="path",
+     *           required=true,
+     *           description="The id location",
+     *           @OA\Schema(
+     *               type="number"
+     *           )
+     *     ),
+     *     @OA\Response(
+     *            response=200,
+     *            description="OK",
+     *            @OA\Schema(
+     *                schema="LocationResponse",
+     *                type="object",
+     *                @OA\Property(
+     *                    property="data",
+     *                    type="array",
+     *                    @OA\Items(ref="#/components/schemas/Location")
+     *                )
+     *            )
+     *     )
+     * )
      */
-    public function update(LocationStoreRequest $request, Location $location): LocationResource
+    public function destroy(int $id): JsonResponse
     {
-        $post = $request->validated();
-        $location->update($post);
+        $this->locationRepository->delete($id);
 
-        return new LocationResource($location);
+        return response()->json(null);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Post(
+     *     path="/locations/{id}/average-weather",
+     *     summary="Delete",
+     *     tags={"Location"},
+     *     @OA\Parameter(
+     *            name="id",
+     *            in="path",
+     *            required=true,
+     *            description="The id location",
+     *            @OA\Schema(
+     *                type="number"
+     *            )
+     *     ),
+     *     @OA\Response(
+     *            response=200,
+     *            description="OK",
+     *            @OA\Schema(
+     *                schema="LocationResponse",
+     *                type="object",
+     *                @OA\Property(
+     *                    property="data",
+     *                    type="array",
+     *                    @OA\Items(ref="#/components/schemas/Location")
+     *                )
+     *            )
+     *      )
+     * )
      */
-    public function destroy(Location $location): JsonResponse
-    {
-        $location->delete();
-
-        return response()->json(null, 204);
-    }
-
-    public function averageWeather(LocationAverageRequest $request, int $id)
+    public function averageWeather(LocationAverageRequest $request, int $id): JsonResponse
     {
         $location = Location::findOrFail($id);
         $post = $request->validated();
-        $collection = [
-            'start_date'  => $post['start_date'],
-            'finish_date' => $post['finish_date'],
-            'values'      => $this->weatherDataRepository->getAverageData($location, $post)
-        ];
 
-        return $collection;
+        $response = new LocationAverageWeatherResponse(
+            $post['start_date'],
+            $post['finish_date'],
+            $this->weatherDataRepository->getAverageData($location, $post)->all()
+        );
+
+        return response()->json($response);
     }
 }

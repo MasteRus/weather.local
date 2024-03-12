@@ -1,0 +1,245 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Weather test task API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "Base URL for all API endpoints"
+        },
+        {
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Base URL DOCKER all API endpoints"
+        }
+    ],
+    "paths": {
+        "/locations": {
+            "get": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "List",
+                "operationId": "3bad728e786474a24578b9579ee37a1a",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LocationCollection"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Create location",
+                "operationId": "084543be926b0fda5932ccead19664a0",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Washington",
+                                    "latitude": 47.751076,
+                                    "longitude": -120.740135
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/locations/{id}": {
+            "get": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Show",
+                "operationId": "a47f6442ea1ed2ac63badaa117e6b2fd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id location",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Delete",
+                "operationId": "7eb22475e1a756942731587375f27883",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id location",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Update location",
+                "operationId": "9eac6045d43e10ed38dcb0073794bfac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id location",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Washington",
+                                    "latitude": 47.751076,
+                                    "longitude": -120.740135
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/locations/{id}/average-weather": {
+            "post": {
+                "tags": [
+                    "Location"
+                ],
+                "summary": "Delete",
+                "operationId": "1e21afe9147a67caa28b037ec445aff1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id location",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LocationCollection": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Location"
+                }
+            },
+            "Location": {
+                "title": "Location for weather data",
+                "properties": {
+                    "id": {
+                        "description": "Transform the resource into an array.",
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "latitude": {
+                        "type": "number"
+                    },
+                    "longitude": {
+                        "type": "number"
+                    },
+                    "latitude_display": {
+                        "type": "string"
+                    },
+                    "longitude_display": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Location",
+            "description": "API Endpoints of Locations"
+        }
+    ]
+}

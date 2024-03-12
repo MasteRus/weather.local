@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Location;
 use App\Models\WeatherData;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class WeatherDataRepository implements IWeatherDataRepository
@@ -74,21 +75,20 @@ AND (wd.`location_id` = ? and wd.`source` = ?)
     /**
      * @param Location $location
      * @param array $params
-     * @return array
+     * @return Collection
      */
-    public function getAverageData(Location $location, array $params): array
+    public function getAverageData(Location $location, array $params): Collection
     {
         $startDate = $params['start_date'];
         $finishDate = $params['finish_date'];
 
-        $query = '
-SELECT p.type as parameter, AVG(wd.value) as avgvalue
-FROM weather_data wd
-LEFT JOIN parameters p on wd.parameter_id = p.id
-WHERE wd.`date` BETWEEN ? AND ?
-GROUP BY wd.parameter_id, p.type
-';
-        $result = DB::select($query, [$startDate, $finishDate]);
-        return $result;
+        $query =  WeatherData::select('p.type as parameter', DB::raw('AVG(wd.value) as avgvalue'))
+            ->from('weather_data as wd')
+            ->leftJoin('parameters as p', 'wd.parameter_id', '=', 'p.id')
+            ->whereBetween('wd.date', [$startDate, $finishDate])
+            ->where('wd.location_id', $location->id)
+            ->groupBy('wd.parameter_id', 'p.type');
+
+        return $query->get();
     }
 }

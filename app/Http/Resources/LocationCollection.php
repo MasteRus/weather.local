@@ -5,6 +5,14 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
+
+/**
+ * @OA\Schema(
+ *  schema="LocationCollection",
+ *     type="array",
+ *     @OA\Items(ref="#/components/schemas/Location")
+ * )
+ */
 class LocationCollection extends ResourceCollection
 {
     /**

@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Events\GetNewWeatherDataEvent;
-use App\Models\Location;
+use App\Service\WeatherDataUpdater;
 use Illuminate\Console\Command;
 
 class GetWeatherData extends Command
@@ -21,6 +20,13 @@ class GetWeatherData extends Command
      * @var string
      */
     protected $description = 'Command description';
+    private WeatherDataUpdater $weatherDataUpdater;
+
+    public function __construct(WeatherDataUpdater $weatherDataUpdater)
+    {
+        parent::__construct();
+        $this->weatherDataUpdater = $weatherDataUpdater;
+    }
 
     /**
      * Execute the console command.
@@ -30,8 +36,6 @@ class GetWeatherData extends Command
         $startDate = $this->argument('startDate') ?? date('Y-m-d', strtotime('-1 day'));
         $finishDate = $this->argument('finishDate') ?? date('Y-m-d', strtotime('-1 day'));
 
-        foreach (Location::all() as $loc) {
-            GetNewWeatherDataEvent::dispatch($loc, $startDate, $finishDate);
-        }
+        $this->weatherDataUpdater->getData($startDate, $finishDate);
     }
 }

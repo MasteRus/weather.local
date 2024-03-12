@@ -168,7 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\WeatherSourceProvider::class,
+        App\Providers\RepositoryProvider::class,
         App\Providers\WeatherDataSourceProvider::class,
     ])->toArray(),
 
