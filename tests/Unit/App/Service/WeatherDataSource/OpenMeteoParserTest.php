@@ -11,11 +11,11 @@ use Tests\TestCase;
 
 class OpenMeteoParserTest extends TestCase
 {
-    const RESPONSE_VALIDATION_ERROR = '{
+    private const RESPONSE_VALIDATION_ERROR = '{
     "reason": "End-date must be larger or equals than start-date",
     "error": true
 }';
-    const RESPONSE_SUCCESS = '{
+    private const RESPONSE_SUCCESS = '{
     "latitude": 33.1,
     "longitude": 33.0,
     "generationtime_ms": 0.4659891128540039,

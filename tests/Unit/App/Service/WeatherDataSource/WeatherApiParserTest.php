@@ -12,11 +12,11 @@ use Tests\TestCase;
 
 class WeatherApiParserTest extends TestCase
 {
-    const RESPONSE_VALIDATION_ERROR = '{
+    private const RESPONSE_VALIDATION_ERROR = '{
     "reason": "End-date must be larger or equals than start-date",
     "error": true
 }';
-    const RESPONSE_SUCCESS = '{
+    private const RESPONSE_SUCCESS = '{
     "location": {
         "name": "Pano Polemidia",
         "region": "Limassol",

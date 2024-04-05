@@ -22,21 +22,7 @@ class LocationStoreRequest extends ApiFormRequest
         return [
             'name'      => 'required|max:255',
             'latitude'  => 'required|numeric|between:-90,90',
-            'longitude' => 'required|between:-180,180'
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.max'          => 'The name has exceeded the limit',
-            'latitude.between'  => 'The latitude must be in range between -90 and 90',
-            'longitude.between' => 'The longitude mus be in range between -180 and 180'
+            'longitude' => 'required|numeric|between:-180,180'
         ];
     }
 }

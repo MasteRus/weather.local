@@ -219,7 +219,7 @@ class LocationController extends Controller
     {
         $this->locationRepository->delete($id);
 
-        return response()->json(null);
+        return response()->json(null, 204);
     }
 
     /**

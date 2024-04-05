@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class LocationAverageRequest extends ApiFormRequest
 {
     /**
@@ -15,26 +17,13 @@ class LocationAverageRequest extends ApiFormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'start_date'  => 'required|date_format:Y-m-d H:i:s',
-            'finish_date' => 'required|date_format:Y-m-d H:i:s',
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'start_date'  => 'Date must be in format "Y-m-d H:i:s"',
-            'finish_date' => 'Date must be in format "Y-m-d H:i:s"',
+            'start_date'  => 'required|date|date_format:Y-m-d H:i:s',
+            'finish_date' => 'required|date|date_format:Y-m-d H:i:s|after:start_date',
         ];
     }
 }
