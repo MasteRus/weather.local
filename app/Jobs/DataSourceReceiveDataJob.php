@@ -42,7 +42,7 @@ class DataSourceReceiveDataJob implements ShouldQueue
             throw new DataSourceMisconfigurationException();
         }
         /** @var WeatherSourceInterface $dataSource */
-        $dataSource = new $this->source();
+        $dataSource = app($this->source);
         if (!($dataSource instanceof WeatherSourceInterface)) {
             Log::error('DataSource ' . $this->source . ' Is not instance of source');
             throw new DataSourceMisconfigurationException();
