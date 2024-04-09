@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-abstract class AbstractRenderableException extends \Exception
+class BasetRenderableException extends \Exception
 {
     public function render(Request $request): Response|null
     {
@@ -36,5 +36,8 @@ abstract class AbstractRenderableException extends \Exception
      * Get the array of any extra items that should form part of the error array that gets returned.
      * Most of the time you just want to return [];
      */
-    abstract protected function getAdditionalJsonErrorItems(): array;
+    protected function getAdditionalJsonErrorItems(): array
+    {
+        return [];
+    }
 }

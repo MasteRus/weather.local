@@ -3,10 +3,6 @@
 namespace App\Exceptions;
 
 
-class DataSourceMisconfigurationException extends AbstractRenderableException
+class DataSourceMisconfigurationException extends BasetRenderableException
 {
-    protected function getAdditionalJsonErrorItems(): array
-    {
-        return [];
-    }
 }
